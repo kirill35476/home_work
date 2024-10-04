@@ -1,28 +1,4 @@
 from random import randint
-#код
-
-user_pass = 123
-admin_pass = 123
-user_login = 'admin'
-admin_login = 'admin'
-if user_pass == admin_pass and user_login == admin_login:
-    print('Доступ получен')
-else:
-    print('доступ запрещен')
-
-# операция или
-
-dice = randint(1, 6)
-survived = dice == 1 or dice == 5
-survived
-
-# операция не
-
-age = int(input('Введите свой возраст'))
-adult = age >= 18
-lives = 2
-if not adult:
-    lives = 30
 
 # тренажер для Марьиванны
 
