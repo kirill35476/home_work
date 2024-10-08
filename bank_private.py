@@ -1,6 +1,6 @@
 class BankAccount:
     def __init__(self, balance):
-        self.__balance = balance
+        self.__balance = balance # приватная переменная
 
     def deposit(self, amount):
         if amount > 0:
@@ -17,4 +17,5 @@ class BankAccount:
 
 account = BankAccount(1000)
 account.deposit(500)
-print(account.get_balance())
+print(account.get_balance()) # 1500
+# account.__balance #вызовет ожибку, так как __balance приватная переменная
