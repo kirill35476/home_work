@@ -5,12 +5,11 @@ class Temperature:
 
     def to_fahrenheit(self, fahrenheit):
         self.fahrenheit = fahrenheit
+        self.fahrenheit = (temp * (9/5) + 32)
     def get_celsius(self):
         return self.__celsius
 
 temp = Temperature(25)
-fahrenheit = temp * 9 / 5 + 32
-print(fahrenheit)
+temp.to_fahrenheit = (temp * (9/5) + 32)
+print(temp.to_fahrenheit)
 print(temp.get_celsius())
-
-
