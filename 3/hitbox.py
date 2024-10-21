@@ -1,4 +1,3 @@
-# Перенсти код из 2_1 hitbox 5.2
 class Hitbox:
     def __init__(self, x, y, width, height):
         self.__x = x
@@ -9,7 +8,7 @@ class Hitbox:
     def __get_width(self):
         return self.__width
     def __set_width(self, width):
-        if width < 0 :
+        if width < 0:
             width = 0
         self.__width = width
 

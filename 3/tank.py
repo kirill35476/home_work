@@ -1,12 +1,19 @@
-# Перенести код из 1_2 tank часть 2
 from hitbox import Hitbox
+from tkinter import PhotoImage, NW
+
 
 class Tank:
+
     count = 0
     SIZE = 100
-    def __init__(self, canvas, x, y,model = 'Т-14 Армата', ammo = 100, speed = 10):
-        self.__hitbox = Hitbox(x, y, Tank.SIZE, Tank.SIZE)   # 1. добавить атрибут hitbox
-        self.canvas = canvas
+
+    def __init__(self, canvas, x, y, model='Т-14 Армата', ammo=100, speed=10,
+                 file_up="../img/image (1).png",
+                 file_down="../img/image 3.png",
+                 file_right="../img/image 2.png",
+                 file_left="../img/image 4.png"):
+        self.__hitbox = Hitbox(x, y, Tank.SIZE, Tank.SIZE)
+        self.__canvas = canvas
         Tank.count += 1
         self.model = model
         self.hp = 100
@@ -16,6 +23,10 @@ class Tank:
         self.speed = speed
         self.x = x
         self.y = y
+        self.__skin_up = PhotoImage(file=file_up)
+        self.__skin_down = PhotoImage(file=file_down)
+        self.__skin_right = PhotoImage(file=file_right)
+        self.__skin_left = PhotoImage(file=file_left)
         if self.x < 0:
             self.x = 0
         if self.y < 0:
@@ -31,56 +42,49 @@ class Tank:
     def forvard(self):
         if self.fuel > 0:
             self.y += -self.speed
-            self.__update_hitbox()  # 2.1 вызвать метод движения HB при смене позиции
+            self.__update_hitbox()
             self.fuel -= 1
+            self.__canvas.itemconfif(self.__id, image=self.__skin_up)
             self.repaint()
             print(self)
 
     def backward(self):
         if self.fuel > 0:
             self.y += self.speed
-            self.__update_hitbox()   # 2.1 вызвать метод движения HB при смене позиции
+            self.__update_hitbox()
             self.fuel -= 1
+            self.__canvas.itemconfif(self.__id, image=self.__skin_down)
             self.repaint()
             print(self)
 
     def left(self):
         if self.fuel > 0:
             self.x += -self.speed
-            self.__update_hitbox()  # 2.1 вызвать метод движения HB при смене позиции
+            self.__update_hitbox()
             self.fuel -= 1
+            self.__canvas.itemconfif(self.__id, image=self.__skin_left)
             self.repaint()
             print(self)
 
     def right(self):
         if self.fuel > 0:
             self.x += self.speed
-            self.__update_hitbox()  # 2.1 вызвать метод движения HB при смене позиции
+            self.__update_hitbox()
             self.fuel -= 1
+            self.__canvas.itemconfif(self.__id, image=self.__skin_right)
             self.repaint()
             print(self)
 
     def create(self):
-        self.id = self.canvas.create_rectangle(self.x, self.y, self.x + Tank.SIZE,
-                                               self.y + Tank.SIZE, fill='red')
+        self.id = self.__canvas.create_image(self.x, self.y, self.x + Tank.SIZE,
+                                             image=self.__skin_up, anchor = NW)
 
     def repaint(self):
-        self.canvas.moveto(self.id, x = self.x, y = self.y)
+        self.__canvas.moveto(self.id, x=self.x, y=self.y)
 
-
-
-    #  2 метод движения хитбокса
     def __update_hitbox(self):
         self.__hitbox.moveto(self.x, self.y)
 
-
-
-
-
-
-
-
-#    3   метод проверки столкновения - обертка
     def inersects(self, other_tank):
         return self.__hitbox.intersects(other_tank.__hitbox)
 
