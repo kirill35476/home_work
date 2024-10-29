@@ -75,7 +75,7 @@ class Tank:
         self.__x -= self.__dx
         self.__y -= self.__dy
         self.__fuel += self.__speed
-        self.__ubdate_hitdox()
+        self.__ubdate_hitbox()
         self.__repaint()
     def __create(self):
         self.__id = self.__canvas.create_image(self.__x, self.__y, image = self.__skin_up, anchor = NW)
