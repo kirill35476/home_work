@@ -1,10 +1,10 @@
 from tank import Tank
-from tkinter import*
+from tkinter import *
 
 KEY_W = 87
 KEY_S = 83
 KEY_A = 65
-KEY_D = 68
+KEY_D = 68    
 
 FPS = 60
 def ubdate():
@@ -15,6 +15,7 @@ def ubdate():
 def check_collision():
     if player.inersects(enemy):
         print('stolknulis')
+        player.undo_move()
 
 def key_press(event):
     if event.keycode == KEY_W:
@@ -28,12 +29,12 @@ def key_press(event):
     check_collision()
 w = Tk()
 w.title('')
-canv = Canvas(w, width = 800, height = 600, bg = 'alice blue')
+canv = Canvas(w, width=800, height=600, bg='alice blue')
 canv.pack()
 
-player = Tank(canvas=canv,x=100,y=50,ammo=100,speed = 1)
+player = Tank(canvas=canv, x=100, y=50, ammo=100,speed=1)
 
-enemy = Tank(canvas=canv,x=300,y=300,ammo=100)
+enemy = Tank(canvas=canv, x=300, y=300, ammo=100)
 
 
 

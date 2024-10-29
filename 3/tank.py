@@ -1,23 +1,23 @@
 from hitbox import Hitbox
-from tkinter import  PhotoImage,NW
+from tkinter import PhotoImage, NW
 class Tank:
     __count = 0
     #__SIZE = 100
-    def __init__(self,canvas , x, y , model = 'Т-14 Армата',
-                 ammo = 100, speed = 10,
-                 up = '../img/tank_up.png',
-                 down = '../img/tank_down.png',
-                 right = '../img/tank_right.png',
-                 left = '../img/tank_left.png',):
+    def __init__(self, canvas , x, y , model = 'Т-14 Армата',
+                 ammo=100, speed=10, __dx=0, __dy=0,
+                 up='../img/tank_up.png',
+                 down='../img/tank_down.png',
+                 right='../img/tank_right.png',
+                 left='../img/tank_left.png',):
         self.__skin_up = PhotoImage(file=up)
         self.__skin_down = PhotoImage(file=down)
         self.__skin_left = PhotoImage(file=left)
         self.__skin_right = PhotoImage(file=right)
         self.__hitbox = Hitbox(x, y, self.get_size(), self.get_size())
-        Tank.__count +=1
+        Tank.__count += 1
         self.__model = model
         self.__canvas = canvas
-        self.__xp =  0
+        self.__xp = 0
         self.__hp = 100
         self.__ammo = ammo
         self.__fuel = 10000
@@ -25,16 +25,18 @@ class Tank:
         self.__y = y
         self.__vx = 0
         self.__vy = 0
+        self.__dx = 0
+        self.__dy = 0
         self.__speed = speed
-        if self.__x < 0 :
+        if self.__x < 0:
             self.__x = 0
-        if self.__y < 0 :
+        if self.__y < 0:
             self.__y = 0
         self.__create()
         self.right()
     def fire(self):
-        if self.__ammo>0:
-            self.__ammo-=1
+        if self.__ammo > 0:
+            self.__ammo -= 1
             print('стреляю')
 
     def forvard(self):
@@ -59,15 +61,22 @@ class Tank:
         self.__vy = 0
         self.__canvas.itemconfig(self.__id,image = self.__skin_right)
 
-
-    def ubdate(self):
+    def ubdate(self,__dx,__dy):
         if self.__fuel > self.__speed:
-            self.__x += self.__vx * self.__speed
-            self.__y += self.__vy * self.__speed
+            self.__dx = self.__vx * self.__speed
+            self.__dy = self.__vy * self.__speed
+            self.__x += self.__dx
+            self.__y += self.__dy
             self.__fuel -= self.__speed
             self.__ubdate_hitbox()
             self.__repaint()
 
+    def undo_move(self):
+        self.__x -= self.__dx
+        self.__y -= self.__dy
+        self.__fuel += self.__speed
+        self.__ubdate_hitdox()
+        self.__repaint()
     def __create(self):
         self.__id = self.__canvas.create_image(self.__x, self.__y, image = self.__skin_up, anchor = NW)
     def __repaint(self):
@@ -80,21 +89,21 @@ class Tank:
         return self.__hitbox.intersects(other_tank.__hitbox)
 
     def get_x(self):
-        return self.x
+        return self.__x
     def get_y(self):
-        return self.y
+        return self.__y
     def get_ammo(self):
-        return self.ammo
+        return self.__ammo
     def get_model(self):
-        return self.model
+        return self.__model
     def get_hp(self):
-        return self.hp
+        return self.__hp
     def get_xp(self):
-        return self.xp
+        return self.__xp
     def get_fuel(self):
-        return self.fuel
+        return self.__fuel
     def get_speed(self):
-        return self.speed
+        return self.__speed
     @staticmethod
     def get_quantity(self):
         return self.__count
