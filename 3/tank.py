@@ -25,14 +25,14 @@ class Tank:
         self.__vx = 0
         self.__vy = 0
         self.__speed = speed
+        self.__dx = 0 # хранение последнего перемещения танка вдоль осей x и y
+        self.__dy = 0
         if self.__x < 0:
             self.__x = 0
         if self.__y < 0:
             self.__y = 0
         self.__create()
         self.right()
-        self.__dx = 0 #хранение последнего перемещения танка вдоль осей x и y
-        self.__dy = 0
 
     def fire(self):
         if self.__ammo > 0:
@@ -52,13 +52,13 @@ class Tank:
     def left(self):
         self.__vx = -1
         self.__vy = 0
-        self.__canvas.itemconfig(self.__id,image = self.__skin_left)
+        self.__canvas.itemconfig(self.__id,image=self.__skin_left)
 
     def right(self):
         self.__vx = 1
         self.__vy = 0
-        self.__canvas.itemconfig(self.__id,image = self.__skin_right)
-    def update(self,__dx,__dy):
+        self.__canvas.itemconfig(self.__id,image=self.__skin_right)
+    def update(self):
         if self.__fuel > self.__speed:
             self.__dx = self.__vx * self.__speed
             self.__dy = self.__vy * self.__speed
@@ -67,16 +67,11 @@ class Tank:
             self.__fuel -= self.__speed
             self.__update_hitbox()
             self.__repaint()
-    def undo_move(self):#откат к предыдушим координатам
-        self.__x -= self.__dx#отмена последнего движения
-        self.__y -= self.__dy
-        self.__fuel += self.__speed
-        self.__update_hitbox()
-        self.__repaint()
+
     def __create(self):
-        self.__id = self.__canvas.create_image(self.__x, self.__y, image = self.__skin_up, anchor = NW)
+        self.__id = self.__canvas.create_image(self.__x, self.__y, image=self.__skin_up, anchor=NW)
     def __repaint(self):
-        self.__canvas.moveto(self.__id, x = self.__x, y = self.__y)
+        self.__canvas.moveto(self.__id, x=self.__x, y=self.__y)
 
     def __ubdate_hitbox(self):
         self.__hitbox.moveto(self.__x, self.__y)
@@ -100,6 +95,14 @@ class Tank:
         return self.__fuel
     def get_speed(self):
         return self.__speed
+
+    def undo_move(self):# откат к предыдушим координатам
+        self.__x -= self.__dx # отмена последнего движения
+        self.__y -= self.__dy
+        self.__fuel += self.__speed
+        self.__update_hitbox()
+        self.__repaint()
+
 
     @staticmethod
     def get_quantity(self):
