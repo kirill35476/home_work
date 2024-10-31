@@ -7,10 +7,10 @@ KEY_A = 65
 KEY_D = 68    
 
 FPS = 60
-def update():
-    player.update()
+def ubdate():
+    player.ubdate()
     check_collision()
-    w.after(1000//FPS, update)
+    w.after(1000//FPS, ubdate)
 
 def check_collision():
     if player.inersects(enemy):

@@ -58,14 +58,14 @@ class Tank:
         self.__vx = 1
         self.__vy = 0
         self.__canvas.itemconfig(self.__id,image=self.__skin_right)
-    def update(self):
+    def ubdate(self):
         if self.__fuel > self.__speed:
             self.__dx = self.__vx * self.__speed
             self.__dy = self.__vy * self.__speed
             self.__x += self.__dx
             self.__y += self.__dy
             self.__fuel -= self.__speed
-            self.__update_hitbox()
+            self.__ubdate_hitbox()
             self.__repaint()
 
     def __create(self):
@@ -100,7 +100,7 @@ class Tank:
         self.__x -= self.__dx # отмена последнего движения
         self.__y -= self.__dy
         self.__fuel += self.__speed
-        self.__update_hitbox()
+        self.__ubdate_hitbox()
         self.__repaint()
 
 
