@@ -2,7 +2,6 @@ from hitbox import Hitbox
 from tkinter import PhotoImage, NW
 from random import randint
 import world
-
 class Tank:
     __count = 0
     __SIZE = 100
@@ -12,14 +11,14 @@ class Tank:
                  down='../img/tank_down.png',
                  right='../img/tank_right.png',
                  left='../img/tank_left.png',
-                 bot =True):
+                 bot=True):
         self.__bot = bot
         self.__target = None
         self.__skin_up = PhotoImage(file=up)
         self.__skin_down = PhotoImage(file=down)
         self.__skin_left = PhotoImage(file=left)
         self.__skin_right = PhotoImage(file=right)
-        self.__hitbox = Hitbox(x, y, self.get_size(), self.get_size())
+        self.__hitbox = Hitbox(x, y, self.get_size(), self.get_size(),  padding = -10)
         Tank.__count += 1
         self.__model = model
         self.__canvas = canvas
@@ -41,13 +40,14 @@ class Tank:
         self.__create()
         self.right()
 
-
     def __check_out_of_world(self):
-        if self.__hitbox.left < 0 or self.__hitbox.top < 0 or self.__hitbox.right >= world.WIDTH or self.__hitbox.bottom >= world.HEIGHT:
+        if self.__hitbox.left < 0 or \
+                self.__hitbox.top < 0 or \
+                self.__hitbox.right >= world.WIDTH or \
+                self.__hitbox.bottom >= world.HEIGHT:
             self.__undo_move()
             if self.__bot:
                 self.__AI_change_orientation()
-
     def set_target(self, target):
         self.__target = target
 
@@ -108,11 +108,9 @@ class Tank:
         self.__canvas.itemconfig(self.__id, image=self.__skin_right)
 
     def update(self):
-        if self.__fuel > self.__speed:
-
+        if self.__fuel >= self.__speed:
             self.__update_hitbox()
             self.__check_out_of_world()
-
             if self.__bot:
                 self.__AI()
 
