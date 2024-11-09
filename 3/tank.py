@@ -2,6 +2,7 @@ from hitbox import Hitbox
 from tkinter import PhotoImage, NW
 from random import randint
 import world
+
 class Tank:
     __count = 0
     __SIZE = 100
@@ -107,6 +108,10 @@ class Tank:
         self.__vy = 0
         self.__canvas.itemconfig(self.__id, image=self.__skin_right)
 
+    def stop(self):
+        self.__vx = 0
+        self.__vy = 0
+
     def update(self):
         if self.__fuel >= self.__speed:
             self.__update_hitbox()
@@ -127,7 +132,9 @@ class Tank:
         self.__id = self.__canvas.create_image(self.__x, self.__y, image=self.__skin_up, anchor=NW)
 
     def __repaint(self):
-        self.__canvas.moveto(self.__id, x=self.__x, y=self.__y)
+        self.__canvas.moveto(self.__id,
+                             x= world.get_sreen_x(self.__x),
+                             y=world.get_sreen_y(self.__y))
 
     def __update_hitbox(self):
         self.__hitbox.moveto(self.__x, self.__y)
