@@ -1,6 +1,8 @@
 from tank import Tank
 from tkinter import *
 import world
+import tank_collection
+import textytre
 
 KEY_UP = 38
 KEY_LEFT = 39
@@ -15,19 +17,16 @@ KEY_D = 68
 FPS = 60
 
 def update():
+    tank_collection.update()
+    player = tank_collection.get_player()
     world.set_camera_xy(player.get_x() - world.SREEN_WIDTH//2 + player.get_size()//2,
                         player.get_y() - world.SREEN_HEIGHT//2 + player.get_size()//2)
-    player.update()
-    enemy.update()
-    neutral.update()
-    check_collision()
     w.after(1000 // FPS, update)
 
-def check_collision():
-    player.intersects(enemy)
-    enemy.intersects(player)
-
 def key_press(event):
+
+    player = tank_collection.get_player()
+
     if event.keycode == KEY_W:
         player.forvard()
     if event.keycode == KEY_S:
@@ -45,23 +44,27 @@ def key_press(event):
         world.move_camera(-5, 0)
     elif event.keycode == KEY_RIGHT:
         world.move_camera(5, 0)
-    check_collision()
+    elif event.keycode == 32:
+        tank_collection.spawn_enemy()
+#    check_collision()
+
+def load_textytre():
+    textytre.load('tank_up','../img/tank_up.png')
+    textytre.load('tank_down','../img/tank_down.png')
+    textytre.load('tank_left','../img/tank_left.png')
+    textytre.load('tank_right','../img/tank_right.png')
+    print(textytre._frames)
 
 w = Tk()
+
+load_textytre()
+
 w.title('')
 canv = Canvas(w, width=world.SREEN_WIDTH, height=world.SREEN_HEIGHT, bg='alice blue')
 #canv = Canvas(w, width=800, height=600, bg='alice blue')
 canv.pack()
 
-player = Tank(canvas=canv, x=100, y=50, ammo=100, speed=1,bot = False)
-
-enemy = Tank(canvas=canv, x=300, y=300, ammo=100, speed=1,bot = True)
-
-neutral = Tank(canvas=canv, x=300, y=300, ammo=100, speed=1,bot = False)
-
-neutral.stop()
-
-enemy.set_target(player)
+tank_collection.initialize(canv)
 
 w.bind('<KeyPress>', key_press)
 update()

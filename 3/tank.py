@@ -2,23 +2,15 @@ from hitbox import Hitbox
 from tkinter import PhotoImage, NW
 from random import randint
 import world
+import textytre as skin
 
 class Tank:
     __count = 0
     __SIZE = 100
 
-    def __init__(self, canvas, x, y,model='Т-14 Армата', ammo=100, speed=1,
-                 up='../img/tank_up.png',
-                 down='../img/tank_down.png',
-                 right='../img/tank_right.png',
-                 left='../img/tank_left.png',
-                 bot=True):
+    def __init__(self, canvas, x, y,model='Т-14 Армата', ammo=100, speed=10,bot=True):
         self.__bot = bot
         self.__target = None
-        self.__skin_up = PhotoImage(file=up)
-        self.__skin_down = PhotoImage(file=down)
-        self.__skin_left = PhotoImage(file=left)
-        self.__skin_right = PhotoImage(file=right)
         self.__hitbox = Hitbox(x, y, self.get_size(), self.get_size(),  padding = -10)
         Tank.__count += 1
         self.__model = model
@@ -91,22 +83,22 @@ class Tank:
     def forvard(self):
         self.__vx = 0
         self.__vy = -1
-        self.__canvas.itemconfig(self.__id, image=self.__skin_up)
+        self.__canvas.itemconfig(self.__id, image=skin.get('tank_up'))
 
     def backward(self):
         self.__vx = 0
         self.__vy = 1
-        self.__canvas.itemconfig(self.__id, image=self.__skin_down)
+        self.__canvas.itemconfig(self.__id, image=skin.get('tank_down'))
 
     def left(self):
         self.__vx = -1
         self.__vy = 0
-        self.__canvas.itemconfig(self.__id, image=self.__skin_left)
+        self.__canvas.itemconfig(self.__id, image=skin.get('tank_left'))
 
     def right(self):
         self.__vx = 1
         self.__vy = 0
-        self.__canvas.itemconfig(self.__id, image=self.__skin_right)
+        self.__canvas.itemconfig(self.__id, image=skin.get('tank_right'))
 
     def stop(self):
         self.__vx = 0
@@ -129,7 +121,7 @@ class Tank:
             self.__repaint()
 
     def __create(self):
-        self.__id = self.__canvas.create_image(self.__x, self.__y, image=self.__skin_up, anchor=NW)
+        self.__id = self.__canvas.create_image(self.__x, self.__y, image=skin.get('tank_up'), anchor=NW)
 
     def __repaint(self):
         self.__canvas.moveto(self.__id,
@@ -176,13 +168,10 @@ class Tank:
     def get_quantity(self):
         return self.__count
 
-    #@staticmethod
     def get_size(self):
-        return self.__skin_up.width()
+        return skin.get('tank_up').width
 
-    def __undo_move(self):  # откат к предыдущим координатам
-        if self.__dx == 0 and self.__dy == 0:
-            return
+    def __undo_move(self):  # отмена последнего движения
         self.__x -= self.__dx  # отмена последнего движения
         self.__y -= self.__dy
         self.__fuel += self.__speed
@@ -190,6 +179,13 @@ class Tank:
         self.__repaint()
         self.__dx = 0
         self.__dy = 0
+
+    def __del__(self):
+        print(f'танк удален')
+        try:
+            self.__canvas.delete(self.__id)
+        except Exception:
+            pass
 
     def __str__(self):
         return (f'Танк модели {self.__model}, имеет {self.__xp} опыта, имеет {self.__fuel}',
