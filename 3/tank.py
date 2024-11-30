@@ -1,58 +1,57 @@
 from hitbox import Hitbox
-from tkinter import PhotoImage, NW
+from tkinter import *
 from random import randint
 import world
+
 import textytre as skin
 
 class Tank:
     __count = 0
-    __SIZE = 100
 
-    def __init__(self, canvas, x, y,model='Т-14 Армата', ammo=100, speed=10,bot=True):
+    def __init__(self, canvas, x, y,model = 'Т-14 Армата',
+                 ammo = 100, speed = 10,
+                 # file_up = '../img/tankT34_up.png',
+                 # file_down = '../img/tankT34_down.png',
+                 # file_left = '../img/tankT34_left.png',
+                 # file_right = '../img/tankT34_right.png',
+
+                 bot = True):
         self.__bot = bot
         self.__target = None
-        self.__hitbox = Hitbox(x, y, self.get_size(), self.get_size(),  padding = -10)
+        # self.__skin_up = PhotoImage(file = file_up)
+        # self.__skin_down = PhotoImage(file = file_down)
+        # self.__skin_left = PhotoImage(file = file_left)
+        # self.__skin_right = PhotoImage(file = file_right)
         Tank.__count += 1
-        self.__model = model
+        self.__hitbox = Hitbox(x, y, self.get_size(), self.get_size(), padding=0)
         self.__canvas = canvas
-        self.__xp = 0
+        self.__model = model
         self.__hp = 100
+        self.__xp = 0
         self.__ammo = ammo
         self.__fuel = 10000
+        self.__speed = speed
         self.__x = x
         self.__y = y
         self.__vx = 0
         self.__vy = 0
-        self.__speed = speed
-        self.__dx = 0  # хранение последнего перемещения танка вдоль осей x и y
+        self.__dx = 0
         self.__dy = 0
         if self.__x < 0:
             self.__x = 0
         if self.__y < 0:
             self.__y = 0
+
         self.__create()
         self.right()
 
-    def __check_out_of_world(self):
-        if self.__hitbox.left < 0 or \
-                self.__hitbox.top < 0 or \
-                self.__hitbox.right >= world.WIDTH or \
-                self.__hitbox.bottom >= world.HEIGHT:
-            self.__undo_move()
-            if self.__bot:
-                self.__AI_change_orientation()
+        print(self)
+
     def set_target(self, target):
         self.__target = target
 
-    def __AI(self):
-        if randint(1,30) == 1:
-            if randint(1,10) < 9 and self.__target is not None:
-                self.__AI_goto_target()
-            else:
-                self.__AI_change_orientation()
-
     def __AI_goto_target(self):
-        if randint(1,2) ==1:
+        if randint(1,2) == 1:
             if self.__target.get_x() < self.get_x():
                 self.left()
             else:
@@ -63,15 +62,21 @@ class Tank:
             else:
                 self.backward()
 
+    def __AI(self):
+        if randint(1,30) == 1:
+            if randint(1,10) < 9 and self.__target is not None:
+                self.__AI_goto_target()
+            else:
+                self.__AI_change_orientation()
 
     def __AI_change_orientation(self):
-        rand = randint(0,3)
+        rand = randint(0, 3)
         if rand == 0:
             self.left()
         if rand == 1:
-            self.right()
-        if rand == 2:
             self.forvard()
+        if rand == 2:
+            self.right()
         if rand == 3:
             self.backward()
 
@@ -83,31 +88,34 @@ class Tank:
     def forvard(self):
         self.__vx = 0
         self.__vy = -1
-        self.__canvas.itemconfig(self.__id, image=skin.get('tank_up'))
+        self.__canvas.itemconfig(self.__id,
+                                 image = skin.get('tank_up'))
 
     def backward(self):
         self.__vx = 0
         self.__vy = 1
-        self.__canvas.itemconfig(self.__id, image=skin.get('tank_down'))
+        self.__canvas.itemconfig(self.__id,
+                                 image = skin.get('tank_down'))
 
     def left(self):
         self.__vx = -1
         self.__vy = 0
-        self.__canvas.itemconfig(self.__id, image=skin.get('tank_left'))
+        self.__canvas.itemconfig(self.__id,
+                                 image = skin.get('tank_left'))
 
     def right(self):
         self.__vx = 1
         self.__vy = 0
-        self.__canvas.itemconfig(self.__id, image=skin.get('tank_right'))
+        self.__canvas.itemconfig(self.__id,
+                                 image = skin.get('tank_right'))
 
     def stop(self):
         self.__vx = 0
         self.__vy = 0
+        self.__undo_move()
 
     def update(self):
-        if self.__fuel >= self.__speed:
-            self.__update_hitbox()
-            self.__check_out_of_world()
+        if self.__fuel > self.__speed:
             if self.__bot:
                 self.__AI()
 
@@ -115,18 +123,31 @@ class Tank:
             self.__dy = self.__vy * self.__speed
             self.__x += self.__dx
             self.__y += self.__dy
+            self.__fuel -=self.__speed
 
-            self.__fuel -= self.__speed
             self.__update_hitbox()
+            self.__chek_out_of_world()
             self.__repaint()
 
+
+    def __undo_move(self):
+        if self.__dx == 0 and self.__dy == 0:
+            return
+        self.__x -= self.__dx
+        self.__y -= self.__dy
+        self.__update_hitbox()
+        self.__repaint()
+        self.__dx = 0
+        self.__dy = 0
+
     def __create(self):
-        self.__id = self.__canvas.create_image(self.__x, self.__y, image=skin.get('tank_up'), anchor=NW)
+        self.__id = self.__canvas.create_image(self.__x, self.__y,
+                                               image = skin.get('tank_up'), anchor ='nw')
 
     def __repaint(self):
         self.__canvas.moveto(self.__id,
-                             x= world.get_sreen_x(self.__x),
-                             y=world.get_sreen_y(self.__y))
+                             x = world.get_screen_x(self.__x),
+                             y = world.get_screen_y(self.__y))
 
     def __update_hitbox(self):
         self.__hitbox.moveto(self.__x, self.__y)
@@ -137,7 +158,7 @@ class Tank:
             self.__undo_move()
             if self.__bot:
                 self.__AI_change_orientation()
-            return value
+        return value
 
     def get_x(self):
         return self.__x
@@ -163,30 +184,32 @@ class Tank:
     def get_speed(self):
         return self.__speed
 
-
     @staticmethod
-    def get_quantity(self):
-        return self.__count
+    def grt_quantity():
+        return Tank.__count
 
+# 9 Получить размеры изображения через skin
     def get_size(self):
-        return skin.get('tank_up').width
+        # return self.__skin_up.width()
+        return skin.get('tank_up').width()
 
-    def __undo_move(self):  # отмена последнего движения
-        self.__x -= self.__dx  # отмена последнего движения
-        self.__y -= self.__dy
-        self.__fuel += self.__speed
-        self.__update_hitbox()
-        self.__repaint()
-        self.__dx = 0
-        self.__dy = 0
+    def __chek_out_of_world(self):
+        if self.__hitbox.left < 0 or \
+                self.__hitbox.top < 0 or \
+                self.__hitbox.right >= world.WIDTH or \
+                self.__hitbox.bottom >= world.HEIGHT:
+            self.__undo_move()
+            if self.__bot:
+                self.__AI_change_orientation()
+
 
     def __del__(self):
-        print(f'танк удален')
+        print(f'удален танк')
         try:
             self.__canvas.delete(self.__id)
         except Exception:
             pass
 
     def __str__(self):
-        return (f'Танк модели {self.__model}, имеет {self.__xp} опыта, имеет {self.__fuel}',
-                f' топливо, здоровье:{self.__hp}, Патроны: {self.__ammo}, Координаты:({self.__x},{self.__y})')
+        return (f'координаты: x = {self.__x}, y = {self.__y}, модель: {self.__model}, '
+                f'здоровье: {self.__hp}, опыт: {self.__xp}, боеприпасы: {self.__ammo}')
