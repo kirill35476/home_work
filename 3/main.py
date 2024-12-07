@@ -5,14 +5,12 @@ import world
 import tank_collection
 import textytre
 
-
 KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN = 37, 39, 38, 40
 
 KEY_W = 87
 KEY_S = 83
 KEY_A = 65
 KEY_D = 68
-
 
 FPS = 60
 def update():
@@ -62,14 +60,12 @@ def load_textures():
     textytre.load(world.CONCRETE,'../img/wall.png' )
 
 
-
-
 w = Tk()
 
 load_textures()
 
 w.title('Танки на минималках 2.0')
-canv = Canvas(w, width=world.SCREEN_WIDTH, height=world.SCREEN_HEIGHT, bg='alice blue')
+canv = Canvas(w, width=world.SCREEN_WIDTH, height=world.SCREEN_HEIGHT, bg='light green')
 canv.pack()
 
 world.initialize(canv)
