@@ -37,7 +37,7 @@ def key_press(event):
         world.move_camera(0, -5)
     elif event.keycode == KEY_DOWN:
         world.move_camera(0, 5)
-    elif event.keycode == KEY_LEFT:
+    elif event.keycode == KEY_LEFT: 
         world.move_camera(-5, 0)
     elif event.keycode == KEY_RIGHT:
         world.move_camera(5, 0)

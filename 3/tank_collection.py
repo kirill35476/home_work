@@ -10,8 +10,8 @@ _canvas = None
 def initialize(canv):
     global _canvas
     _canvas = canv
-    player = Tank(canvas = canv, x = world.BLOCK_SIZE*2, y = world.BLOCK_SIZE*4, ammo = 100, speed=1, bot = False)
-    enemy = Tank(canvas = canv, x = world.BLOCK_SIZE*4, y = world.BLOCK_SIZE*6, ammo = 100, speed=1, bot = True)
+    player = Tank(canvas = canv, x = world.BLOCK_SIZE*2, y = world.BLOCK_SIZE*4, ammo = 100, speed=2, bot = False)
+    enemy = Tank(canvas = canv, x = world.BLOCK_SIZE*4, y = world.BLOCK_SIZE*6, ammo = 100, speed=2, bot = True)
     enemy.set_target(player)
 
     _tanks.append(player)
@@ -35,7 +35,6 @@ def check_collision(tank):
             return True
     return False
 
-# 1 добавим больше танков вызывать будем по нажатию на пробел в основном модуле
 def spawn_enemy():
     pos_x = randint(200, world.WIDTH - 200)
     pos_y = randint(200, world.HEIGHT - 200)
