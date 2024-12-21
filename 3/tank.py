@@ -51,7 +51,7 @@ class Tank:
         self.__set_usual_speed()
         result = self.__hitbox.check_map_collision(details)
         if result:
-            if details['block'] == world.WATER:
+            if world.WATER in details and len(details) == 1:
                 self.__set_water_speed()
             else:
                 self.__undo_move()
