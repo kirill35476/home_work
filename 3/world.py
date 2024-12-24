@@ -1,5 +1,3 @@
-#from pygame.display import update
-
 import textytre
 from tkinter import NW
 from random import randint, choice
@@ -21,6 +19,22 @@ _canvas = None
 _map = []
 AIR = 'a'
 
+def laod_map(canvas,file_name):
+    global _map
+
+    _map = []
+
+    with open(file_name) as f:
+        i = 0
+        for line in f:
+            blocks = line.strip().replace('\t','')
+            row = []
+            for j in range(len(blocks)):
+                cell = _Cell(_canvas,blocks[j],j * BLOCK_SIZE, i * BLOCK_SIZE)
+                row.append(cell)
+            _map.append(row)
+            i += 1
+ #   f.close()
 def get_block(row,col):
     if row < 0 or col < 0 or row >= get_rows() \
         or col >= get_cols():
@@ -28,16 +42,16 @@ def get_block(row,col):
     else:
         return _map[row][col].get_block()
 
-def create_map(rows = 20, cols  =20):
+def create_map(rows = 20, cols = 20):
     global _map
-    _map=[]
+    _map = []
     for i in range(rows):
         row = []
         for j in range(cols):
             block = GROUND
             if i == 0 or j == 0 or i == rows-1 or j == cols - 1:
                 block = CONCRETE
-            elif randint(1,100) <= 15:
+            elif randint(1, 100) <= 15:
                 block = choice([WATER, GROUND, BRICK])
             cell = _Cell(_canvas, block, BLOCK_SIZE*j, BLOCK_SIZE*i)
             row.append(cell)
@@ -81,7 +95,8 @@ def initialize(canv):
     global _canvas,_map
     _canvas = canv
     create_map(20,20)
-
+    laod_map('../map/1.tmap')
+    laod_map('../map/2.tmap')
 def set_camera_xy(x, y):
     global _camera_x, _camera_y
 
