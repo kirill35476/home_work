@@ -1,4 +1,4 @@
-from pygame.display import update
+#from pygame.display import update
 
 import textytre
 from tkinter import NW
