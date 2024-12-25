@@ -19,7 +19,7 @@ _canvas = None
 _map = []
 AIR = 'a'
 
-def laod_map(canvas,file_name):
+def laod_map(file_name):
     global _map
 
     _map = []
@@ -34,7 +34,7 @@ def laod_map(canvas,file_name):
                 row.append(cell)
             _map.append(row)
             i += 1
- #   f.close()
+
 def get_block(row,col):
     if row < 0 or col < 0 or row >= get_rows() \
         or col >= get_cols():
@@ -95,8 +95,8 @@ def initialize(canv):
     global _canvas,_map
     _canvas = canv
     create_map(20,20)
-    laod_map('../map/1.tmap')
-    laod_map('../map/2.tmap')
+    laod_map('./map/1.tmap')
+    laod_map('./map/2.tmap')
 def set_camera_xy(x, y):
     global _camera_x, _camera_y
 
