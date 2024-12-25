@@ -1,4 +1,4 @@
-# Спавним больше танков
+
 from random import randint
 from tank import Tank
 import world
@@ -13,9 +13,6 @@ def initialize(canv):
     spawn(False)
     for i in range(5):
         spawn(True).set_target(get_player())
-
-
-
 
 def get_player():
     return _tanks[0]
@@ -37,10 +34,6 @@ def check_collision(tank):
 def spawn_enemy():
     pos_x = randint(200, world.WIDTH - 200)
     pos_y = randint(200, world.HEIGHT - 200)
-
-    # pos_x = randint(200, 800)
-    # pos_y = randint(200, 600)
-
     t = Tank(_canvas, x=pos_x, y=pos_y, speed=1)
 
 

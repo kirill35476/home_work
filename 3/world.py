@@ -36,8 +36,7 @@ def laod_map(file_name):
             i += 1
 
 def get_block(row,col):
-    if row < 0 or col < 0 or row >= get_rows() \
-        or col >= get_cols():
+    if row < 0 or col < 0 or row >= get_rows() or col >= get_cols():
         return AIR
     else:
         return _map[row][col].get_block()
@@ -64,8 +63,8 @@ def update_map(all = False):
     last_col = get_col(_camera_x + SCREEN_WIDTH + 1)
 
     if all:
-        first_row =0
-        first_col =0
+        first_row = 0
+        first_col = 0
         last_row = get_rows() - 1
         last_col = get_cols() - 1
 
@@ -86,17 +85,17 @@ def get_cols():
     return len(_map[0])
 
 def get_widht():
-    return get_cols() *BLOCK_SIZE
+    return get_cols() * BLOCK_SIZE
 
 def get_height():
     return get_rows() * BLOCK_SIZE
 
 def initialize(canv):
-    global _canvas,_map
+    global _canvas
     _canvas = canv
-    create_map(20,20)
-    laod_map('./map/1.tmap')
-    laod_map('./map/2.tmap')
+    create_map(25, 25)
+    laod_map('../map/1.tmap')
+    laod_map('../map/2.tmap')
 def set_camera_xy(x, y):
     global _camera_x, _camera_y
 
@@ -146,8 +145,7 @@ class _Cell:
     def __create_element(self,block):
         if block != GROUND:
             self.__id = self.__canvas.create_image(self.__screen_x,self.__screen_y,
-                                                       image = textytre.get(block),
-                                                       anchor = NW)
+                                                       image=textytre.get(block), anchor=NW)
 
     def update(self):
         if self.__block == GROUND:
@@ -157,7 +155,7 @@ class _Cell:
         if self.__screen_x == screen_x and self.__screen_y == screen_y:
             return
 
-        self.__canvas.moveto(self.__id, x=screen_x,y=screen_y)
+        self.__canvas.moveto(self.__id, x=screen_x, y=screen_y)
 
         self.__screen_x = screen_x
         self.__screen_y = screen_y
