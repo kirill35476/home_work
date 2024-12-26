@@ -46,7 +46,6 @@ def key_press(event):
         tank_collection.spawn_enemy()
 
 def load_textures():
-    # pass
     textytre.load('tank_up',
                  '../img/tank_up.png')
     textytre.load('tank_down',
@@ -58,7 +57,6 @@ def load_textures():
     textytre.load(world.BRICK,'../img/brick.png')
     textytre.load(world.WATER, '../img/water.png')
     textytre.load(world.CONCRETE,'../img/wall.png' )
-
 
 w = Tk()
 

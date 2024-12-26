@@ -96,6 +96,7 @@ def initialize(canv):
     create_map(25, 25)
     laod_map('../map/1.tmap')
     laod_map('../map/2.tmap')
+    laod_map('../map/3.tmap')
 def set_camera_xy(x, y):
     global _camera_x, _camera_y
 
