@@ -19,7 +19,7 @@ _canvas = None
 _map = []
 AIR = 'a'
 
-def laod_map(file_name):
+def load_map(file_name):
     global _map
 
     _map = []
@@ -93,10 +93,11 @@ def get_height():
 def initialize(canv):
     global _canvas
     _canvas = canv
-    create_map(25, 25)
-    laod_map('../map/1.tmap')
-    laod_map('../map/2.tmap')
-    laod_map('../map/3.tmap')
+    create_map(20, 20)
+    # load_map('../map/1.tmap')
+    # load_map('../map/2.tmap')
+    # load_map('../map/3.tmap')
+
 def set_camera_xy(x, y):
     global _camera_x, _camera_y
 
