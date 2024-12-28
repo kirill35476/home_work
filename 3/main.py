@@ -58,6 +58,8 @@ def load_textures():
     textytre.load(world.WATER, '../img/water.png')
     textytre.load(world.CONCRETE,'../img/wall.png' )
 
+    textytre.load(world.MISSLE, '../img/bonus.png')
+
 w = Tk()
 
 load_textures()

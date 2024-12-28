@@ -7,7 +7,7 @@ class Hitbox:
         self.__y = y
         self.__set_width(width)
         self.__set_height(height)
-        self.__black_list = [world.CONCRETE,world.WATER,world.BRICK]
+        self.__black_list = [world.CONCRETE,world.WATER,world.BRICK,world.MISSLE]
 
     def __get_corner_points(self):
         p_top_right ={'x':self.right, 'y':self.top}
