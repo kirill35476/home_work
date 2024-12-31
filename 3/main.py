@@ -1,5 +1,5 @@
 from tank import Tank
-from tkinter import*
+from tkinter import *
 
 import world
 import tank_collection
@@ -13,14 +13,15 @@ KEY_A = 65
 KEY_D = 68
 
 FPS = 60
+
+
 def update():
     tank_collection.update()
     player = tank_collection.get_player()
-    world.set_camera_xy(player.get_x()-world.SCREEN_WIDTH//2 + player.get_size()//2,
-                        player.get_y()-world.SCREEN_HEIGHT//2 + player.get_size()//2)
+    world.set_camera_xy(player.get_x() - world.SCREEN_WIDTH // 2 + player.get_size() // 2,
+                        player.get_y() - world.SCREEN_HEIGHT // 2 + player.get_size() // 2)
     world.update_map()
-    w.after(1000//FPS, update)
-
+    w.after(1000 // FPS, update)
 
 
 def key_press(event):
@@ -37,7 +38,7 @@ def key_press(event):
         world.move_camera(0, -5)
     elif event.keycode == KEY_DOWN:
         world.move_camera(0, 5)
-    elif event.keycode == KEY_LEFT: 
+    elif event.keycode == KEY_LEFT:
         world.move_camera(-5, 0)
     elif event.keycode == KEY_RIGHT:
         world.move_camera(5, 0)
@@ -45,20 +46,22 @@ def key_press(event):
     elif event.keycode == 32:
         tank_collection.spawn_enemy()
 
+
 def load_textures():
     textytre.load('tank_up',
-                 '../img/tank_up.png')
+                  '../img/tank_up.png')
     textytre.load('tank_down',
-                 '../img/tank_down.png')
+                  '../img/tank_down.png')
     textytre.load('tank_left',
-                 '../img/tank_left.png')
+                  '../img/tank_left.png')
     textytre.load('tank_right',
-                 '../img/tank_right.png')
-    textytre.load(world.BRICK,'../img/brick.png')
+                  '../img/tank_right.png')
+    textytre.load(world.BRICK, '../img/brick.png')
     textytre.load(world.WATER, '../img/water.png')
-    textytre.load(world.CONCRETE,'../img/wall.png' )
+    textytre.load(world.CONCRETE, '../img/wall.png')
 
     textytre.load(world.MISSLE, '../img/bonus.png')
+
 
 w = Tk()
 

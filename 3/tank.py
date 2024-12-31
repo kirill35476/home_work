@@ -1,9 +1,10 @@
 from hitbox import Hitbox
-from tkinter import *
+
 from random import randint
 import world
 
 import textytre as skin
+
 
 class Tank:
     __count = 0
@@ -36,14 +37,14 @@ class Tank:
         self.right()
 
         self.__usual_speed = speed
-        self.__water_speed = speed/2
+        self.__water_speed = speed / 2
 
         print(self)
 
     def __take_ammo(self):
-        self.__ammo +=10
-        if self.__ammo >100:
-             self.__ammo = 100
+        self.__ammo += 10
+        if self.__ammo > 100:
+            self.__ammo = 100
 
     def __set_usual_speed(self):
         self.__speed = self.__usual_speed
@@ -58,33 +59,31 @@ class Tank:
         if result:
             self.__on_map_collocation(details)
 
-    def __on_map_collocation(self,details):
-            if world.WATER in details and len(details) == 1:
-                self.__set_water_speed()
+    def __on_map_collocation(self, details):
+        if world.WATER in details and len(details) == 1:
+            self.__set_water_speed()
 
-            # if world.BRICK in details:
-            #     pos = details[world.BRICK]
-            #     world.destroy(pos['row'],pos['col'])
-            # if world.CONCRETE in details:
-            #     self.__undo_move()
-            #     if self.__bot:
-            #         self.__AI_change_orientation()
-            elif world.MISSLE in details:
-                pos = details[world.MISSLE]
-                if world.take(pos['row'],pos['col'])!=world.AIR:
-                    self.__take_ammo()
-            else:
-                self.__undo_move()
-                if self.__bot:
-                    self.__AI_change_orientation()
-
-
+        # if world.BRICK in details:
+        #     pos = details[world.BRICK]
+        #     world.destroy(pos['row'],pos['col'])
+        # if world.CONCRETE in details:
+        #     self.__undo_move()
+        #     if self.__bot:
+        #         self.__AI_change_orientation()
+        elif world.MISSLE in details:
+            pos = details[world.MISSLE]
+            if world.take(pos['row'], pos['col']) != world.AIR:
+                self.__take_ammo()
+        else:
+            self.__undo_move()
+            if self.__bot:
+                self.__AI_change_orientation()
 
     def set_target(self, target):
         self.__target = target
 
     def __AI_goto_target(self):
-        if randint(1,2) == 1:
+        if randint(1, 2) == 1:
             if self.__target.get_x() < self.get_x():
                 self.left()
             else:
@@ -96,8 +95,8 @@ class Tank:
                 self.backward()
 
     def __AI(self):
-        if randint(1,30) == 1:
-            if randint(1,10) < 9 and self.__target is not None:
+        if randint(1, 30) == 1:
+            if randint(1, 10) < 9 and self.__target is not None:
                 self.__AI_goto_target()
             else:
                 self.__AI_change_orientation()
@@ -122,25 +121,25 @@ class Tank:
         self.__vx = 0
         self.__vy = -1
         self.__canvas.itemconfig(self.__id,
-                                 image = skin.get('tank_up'))
+                                 image=skin.get('tank_up'))
 
     def backward(self):
         self.__vx = 0
         self.__vy = 1
         self.__canvas.itemconfig(self.__id,
-                                 image = skin.get('tank_down'))
+                                 image=skin.get('tank_down'))
 
     def left(self):
         self.__vx = -1
         self.__vy = 0
         self.__canvas.itemconfig(self.__id,
-                                 image = skin.get('tank_left'))
+                                 image=skin.get('tank_left'))
 
     def right(self):
         self.__vx = 1
         self.__vy = 0
         self.__canvas.itemconfig(self.__id,
-                                 image = skin.get('tank_right'))
+                                 image=skin.get('tank_right'))
 
     def stop(self):
         self.__vx = 0
@@ -156,7 +155,7 @@ class Tank:
             self.__dy = self.__vy * self.__speed
             self.__x += self.__dx
             self.__y += self.__dy
-            self.__fuel -=self.__speed
+            self.__fuel -= self.__speed
 
             self.__update_hitbox()
             self.__chek_out_of_world()
@@ -175,12 +174,12 @@ class Tank:
 
     def __create(self):
         self.__id = self.__canvas.create_image(self.__x, self.__y,
-                                               image = skin.get('tank_up'), anchor ='nw')
+                                               image=skin.get('tank_up'), anchor='nw')
 
     def __repaint(self):
         self.__canvas.moveto(self.__id,
-                             x = world.get_screen_x(self.__x),
-                             y = world.get_screen_y(self.__y))
+                             x=world.get_screen_x(self.__x),
+                             y=world.get_screen_y(self.__y))
 
     def __update_hitbox(self):
         self.__hitbox.moveto(self.__x, self.__y)
@@ -221,7 +220,7 @@ class Tank:
     def grt_quantity():
         return Tank.__count
 
-# 9 Получить размеры изображения через skin
+    # 9 Получить размеры изображения через skin
     def get_size(self):
         # return self.__skin_up.width()
         return skin.get('tank_up').width()
@@ -234,7 +233,6 @@ class Tank:
             self.__undo_move()
             if self.__bot:
                 self.__AI_change_orientation()
-
 
     def __del__(self):
         print(f'удален танк')
