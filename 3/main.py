@@ -43,9 +43,6 @@ def key_press(event):
     elif event.keycode == KEY_RIGHT:
         world.move_camera(5, 0)
 
-    elif event.keycode == 32:
-        tank_collection.spawn_enemy()
-
 
 def load_textures():
     textytre.load('tank_up',
