@@ -53,6 +53,16 @@ def load_textures():
                   '../img/tank_left.png')
     textytre.load('tank_right',
                   '../img/tank_right.png')
+
+    textytre.load('tank_up_player',
+                  '../img/tank_up_player.png')
+    textytre.load('tank_down_player',
+                  '../img/tank_down_player.png')
+    textytre.load('tank_left_player',
+                  '../img/tank_left_player.png')
+    textytre.load('tank_right_player',
+                  '../img/tank_right_player.png')
+
     textytre.load(world.BRICK, '../img/brick.png')
     textytre.load(world.WATER, '../img/water.png')
     textytre.load(world.CONCRETE, '../img/wall.png')
