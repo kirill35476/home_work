@@ -1,6 +1,6 @@
-import textytre as skin
 import world
 from hitbox import Hitbox
+import textytre as skin
 from tkinter import NW
 from random import randint
 
@@ -17,16 +17,13 @@ class Unit:
         self._dx = 0
         self._dy = 0
         self._bot = bot
-        self._hitbox = Hitbox(x, y,
-                              world.BLOCK_SIZE,
-                              world.BLOCK_SIZE,
-                              padding=padding)
+        self._bot = bot
+        self._hitbox = Hitbox(x, y, world.BLOCK_SIZE, world.BLOCK_SIZE, padding=padding)
         self._default_image = default_image
-        self._left_image = default_image
-        self._right_image = default_image
         self._forward_image = default_image
         self._backward_image = default_image
-
+        self._left_image = default_image
+        self._right_image = default_image
         self._create()
 
     def _create(self):
@@ -79,6 +76,11 @@ class Unit:
         self._check_map_collision()
         self._repaint()
 
+    def _repaint(self):
+        screen_x = world.get_screen_x(self._x)
+        screen_y = world.get_screen_y(self._y)
+        self._canvas.moveto(self._id, x=screen_x, y=screen_y)
+
     def _AI(self):
         pass
 
@@ -98,11 +100,6 @@ class Unit:
 
     def _on_map_collision(self, details):
         pass
-
-    def _repaint(self):
-        screen_x = world.get_screen_x(self._x)
-        screen_y = world.get_screen_x(self._y)
-        self._canvas.moveto(self._id, x=screen_x, y=screen_y)
 
     def _undo_move(self):
         if self._dx == 0 and self._dy == 0:
@@ -196,24 +193,17 @@ class Tank(Unit):
             else:
                 self.backward()
 
-    def _AI(self):
-        if randint(1, 30) == 1:
-            if randint(1, 10) < 9 and self._target is not None:
-                self._AI_goto_target()
-            else:
-                self._change_orientation()
-
-    def fire(self):
-        if self._ammo > 0:
-            self._ammo -= 1
+    def get_ammo(self):
+        return self._ammo
 
     def _take_ammo(self):
         self._ammo += 10
         if self._ammo > 100:
             self._ammo1 = 100
 
-    def get_ammo(self):
-        return self._ammo
+    def fire(self):
+        if self._ammo > 0:
+            self._ammo -= 1
 
     def _set_usual_speed(self):
         self._speed = self._usual_speed
@@ -240,3 +230,10 @@ class Tank(Unit):
         super()._on_intersect(other_unit)
         if self._bot:
             self._change_orientation()
+
+    def _AI(self):
+        if randint(1, 30) == 1:
+            if randint(1, 10) < 9 and self._target is not None:
+                self._AI_goto_target()
+            else:
+                self._change_orientation()
