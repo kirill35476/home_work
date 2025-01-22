@@ -1,5 +1,5 @@
 from random import randint
-from units                                                                                           import Tank
+from units import Tank
 import world
 
 _tanks = []
@@ -53,8 +53,8 @@ def spawn(is_bot=True):
         if world.get_block(row, col) != world.GROUND:
             continue
 
-        t = Tank(_canvas, col,
-                 row, bot=is_bot)
+        t = Tank(_canvas, row,
+                 col, bot=is_bot)
 
         if not check_collision(t):
             _tanks.append(t)

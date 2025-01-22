@@ -27,7 +27,7 @@ def update():
 def key_press(event):
     player = tank_collection.get_player()
     if event.keycode == KEY_W:
-        player.forvard()
+        player.forward()
     elif event.keycode == KEY_S:
         player.backward()
     elif event.keycode == KEY_A:

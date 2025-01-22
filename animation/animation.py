@@ -57,11 +57,10 @@ class App:
         self.master.after(20, self.update)
 
 
-if __name__ == "__main__":
-    root = tk.Tk()
-    root.title("Bouncing Objects with Background Image")
+root = tk.Tk()
+root.title("анимация")
 
-    # Укажите путь к фоновому изображению
-    background_image_path = 'космос.png'
-    app = App(root, background_image_path)
-    root.mainloop()
+# Укажите путь к фоновому изображению
+background_image_path = 'космос.png'
+app = App(root, background_image_path)
+root.mainloop()
