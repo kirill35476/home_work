@@ -2,7 +2,7 @@ import world
 
 
 class Hitbox:
-    def __init__(self, x, y, width, height, padding=10):
+    def __init__(self, x, y, width, height, padding=2):
         self.padding = padding
         self.__x = x
         self.__y = y

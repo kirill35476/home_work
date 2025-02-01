@@ -271,8 +271,8 @@ class Tank(Unit):
         row = world.get_row(center_y)
         col = world.get_row(center_x)
 
-        row_target = world.get_row(target_center_x)
-        col_target = world.get_col(target_center_y)
+        row_target = world.get_row(target_center_y)
+        col_target = world.get_col(target_center_x)
 
         if row == row_target:
             if col < col_target:
@@ -289,7 +289,6 @@ class Tank(Unit):
             else:
                 self.backward()
                 self.fire()
-
 
 
 class Missile(Unit):
