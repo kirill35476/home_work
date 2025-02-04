@@ -31,6 +31,7 @@ def key_press(event):
     player = tank_collection.get_player()
 
     if player.is_destroyed():
+
         return
 
     if event.keycode == KEY_W:
@@ -82,6 +83,8 @@ def load_textures():
     textytre.load('missile_left', '../img/missile_left.png')
     textytre.load('missile_right', '../img/missile_right.png')
     textytre.load('missile_down', '../img/missile_down.png')
+
+    textytre.load('tank_destroy', '../img/tank_destroy.png')
 
 
 w = Tk()

@@ -26,14 +26,13 @@ class Unit:
         self._backward_image = default_image
         self._left_image = default_image
         self._right_image = default_image
+        self._tank_destroy = default_image
         self._create()
 
-
-    def damage(self,value):
+    def damage(self, value):
         self._hp -= value
         if self._hp <= 0:
             self.destroy()
-
 
     def is_destroyed(self):
         return self._destroyed
@@ -42,6 +41,9 @@ class Unit:
         self._destroyed = True
         self.stop()
         self._speed = 0
+        if self._hp == 0:
+            self._canvas.itemconfig(self._id,
+                                    image=skin.get(self._tank_destroy))
 
     def _create(self):
         self._id = self._canvas.create_image(self._x, self._y,image=skin.get(self._default_image),anchor=NW)
@@ -186,12 +188,14 @@ class Tank(Unit):
             self._backward_image = 'tank_down_player'
             self._left_image = 'tank_left_player'
             self._right_image = 'tank_right_player'
+            self._tank_destroy = 'tank_destroy'
 
         self.forward()
         self._ammo = 80
         self._usual_speed = self._speed
         self._water_speed = self._speed // 2
         self._target = None
+
 
     def set_target(self, target):
         self._target = target
@@ -276,18 +280,18 @@ class Tank(Unit):
 
         if row == row_target:
             if col < col_target:
-                self.left()
+                self.right()
                 self.fire()
             else:
-                self.right()
+                self.left()
                 self.fire()
 
         elif col == col_target:
             if row < row_target:
-                self.forward()
+                self.backward()
                 self.fire()
             else:
-                self.backward()
+                self.forward()
                 self.fire()
 
 
