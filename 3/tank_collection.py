@@ -10,7 +10,7 @@ id_screen_text = 0
 
 
 def initialize(canv):
-    global _canvas,id_screen_text
+    global _canvas, id_screen_text
     _canvas = canv
     player = spawn(False)
     enemy = spawn(True).set_target(player)
@@ -41,7 +41,7 @@ def get_player():
 
 def update():
     _update_screen()
-    start = len(_tanks) -1
+    start = len(_tanks) - 1
     for i in range(start, -1, -1):
         if _tanks[i].is_destroyed() and i != 0:
             del _tanks[i]

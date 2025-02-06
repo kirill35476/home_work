@@ -27,6 +27,11 @@ class Unit:
         self._left_image = default_image
         self._right_image = default_image
         self._tank_destroy = default_image
+        self._100 = default_image
+        self._75 = default_image
+        self._50 = default_image
+        self._25 = default_image
+        self._0 = default_image
         self._create()
 
     def damage(self, value):
@@ -46,7 +51,7 @@ class Unit:
                                     image=skin.get(self._tank_destroy))
 
     def _create(self):
-        self._id = self._canvas.create_image(self._x, self._y,image=skin.get(self._default_image),anchor=NW)
+        self._id = self._canvas.create_image(self._x, self._y, image=skin.get(self._default_image), anchor=NW)
 
     def __del__(self):
         try:
@@ -183,12 +188,22 @@ class Tank(Unit):
             self._backward_image = 'tank_down'
             self._left_image = 'tank_left'
             self._right_image = 'tank_right'
+            self._100 = '100hp'
+            self._75 = '75hp'
+            self._50 = '50hp'
+            self._25 = '25hp'
+            self._0 = '0hp'
         else:
             self._forward_image = 'tank_up_player'
             self._backward_image = 'tank_down_player'
             self._left_image = 'tank_left_player'
             self._right_image = 'tank_right_player'
             self._tank_destroy = 'tank_destroy'
+            self._100 = '100hp'
+            self._75 = '75hp'
+            self._50 = '50hp'
+            self._25 = '25hp'
+            self._0 = '0hp'
 
         self.forward()
         self._ammo = 80
@@ -196,6 +211,17 @@ class Tank(Unit):
         self._water_speed = self._speed // 2
         self._target = None
 
+    def hp_damage(self):
+        if self._hp == 100:
+            print('100')
+        elif 100 > self._hp > 75:
+            print('75')
+        elif 75 > self._hp > 50:
+            print('50')
+        elif 50 > self._hp > 25:
+            print('25')
+        elif 25 > self._hp > 0:
+            print('0')
 
     def set_target(self, target):
         self._target = target
@@ -257,16 +283,16 @@ class Tank(Unit):
                 self._AI_goto_target()
             else:
                 self._change_orientation()
-        elif randint(1,30) == 1:
+        elif randint(1, 30) == 1:
             self._AI_fire()
-        elif randint(1,100) == 1:
+        elif randint(1, 100) == 1:
             self.fire()
 
     def _AI_fire(self):
         if self._target is None:
             return
 
-        center_x =self.get_x() + self.get_size()//2
+        center_x = self.get_x() + self.get_size()//2
         center_y = self.get_y() + self.get_size() // 2
 
         target_center_x = (self._target.get_x() + self._target.get_size() // 2)
@@ -307,7 +333,7 @@ class Missile(Unit):
         self._right_image = 'missile_right'
         self._owner = owner
 
-        if owner.get_vx() == 1 and owner.get_vy() ==0:
+        if owner.get_vx() == 1 and owner.get_vy() == 0:
             self.right()
         if owner.get_vx() == -1 and owner.get_vy() == 0:
             self.left()
@@ -324,15 +350,12 @@ class Missile(Unit):
     def get_owner(self):
         return self._owner
 
-
     def _on_map_collision(self, details):
         if world.BRICK in details:
             row = details[world.BRICK]['row']
             col = details[world.BRICK]['col']
-            world.destroy(row,col)
+            world.destroy(row, col)
             self.destroy()
 
         if world.CONCRETE in details:
             self.destroy()
-
-
