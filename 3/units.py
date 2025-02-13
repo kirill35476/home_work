@@ -27,11 +27,6 @@ class Unit:
         self._left_image = default_image
         self._right_image = default_image
         self._tank_destroy = default_image
-        self._100 = default_image
-        self._75 = default_image
-        self._50 = default_image
-        self._25 = default_image
-        self._0 = default_image
         self._create()
 
     def damage(self, value):
@@ -188,40 +183,18 @@ class Tank(Unit):
             self._backward_image = 'tank_down'
             self._left_image = 'tank_left'
             self._right_image = 'tank_right'
-            self._100 = '100hp'
-            self._75 = '75hp'
-            self._50 = '50hp'
-            self._25 = '25hp'
-            self._0 = '0hp'
         else:
             self._forward_image = 'tank_up_player'
             self._backward_image = 'tank_down_player'
             self._left_image = 'tank_left_player'
             self._right_image = 'tank_right_player'
             self._tank_destroy = 'tank_destroy'
-            self._100 = '100hp'
-            self._75 = '75hp'
-            self._50 = '50hp'
-            self._25 = '25hp'
-            self._0 = '0hp'
 
         self.forward()
         self._ammo = 80
         self._usual_speed = self._speed
         self._water_speed = self._speed // 2
         self._target = None
-
-    def hp_damage(self):
-        if self._hp == 100:
-            print('100')
-        elif 100 > self._hp > 75:
-            print('75')
-        elif 75 > self._hp > 50:
-            print('50')
-        elif 50 > self._hp > 25:
-            print('25')
-        elif 25 > self._hp > 0:
-            print('0')
 
     def set_target(self, target):
         self._target = target

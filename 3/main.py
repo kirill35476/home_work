@@ -74,12 +74,6 @@ def load_textures():
 
     textytre.load('tank_destroy', '../img/tank_destroy.png')
 
-    textytre.load('100', '../img/100.png')
-    textytre.load('75', '../img/75.png')
-    textytre.load('50', '../img/50.png')
-    textytre.load('25', '../img/25.png')
-    textytre.load('0', '../img/0.png')
-
 
 class Menu:
     def __init__(self, root, start_game_callback, exit_game_callback):
