@@ -80,6 +80,27 @@ class Menu:
         self.frame = Frame(root, bg="lightblue")
         self.frame.pack(fill="both", expand=True)
 
+        # Сохраняем callback-функции
+        self.start_game_callback = start_game_callback
+        self.exit_game_callback = exit_game_callback
+
+        # Показываем главное меню
+        self.show_main_menu()
+
+    def hide(self):
+        """Скрыть меню."""
+        self.frame.pack_forget()
+
+    def show(self):
+        """Показать меню."""
+        self.frame.pack(fill="both", expand=True)
+
+    def show_main_menu(self):
+        """Показывает главное меню."""
+        # Очищаем текущее содержимое меню
+        for widget in self.frame.winfo_children():
+            widget.destroy()
+
         # Заголовок меню
         self.title_label = Label(
             self.frame,
@@ -96,9 +117,20 @@ class Menu:
             font=("Arial", 24),
             width=20,
             height=2,
-            command=start_game_callback
+            command=self.start_game_callback
         )
         self.start_button.pack(pady=20)
+
+        # Кнопка "Настройки"
+        self.settings_button = Button(
+            self.frame,
+            text="Настройки",
+            font=("Arial", 24),
+            width=20,
+            height=2,
+            command=self.show_soon_message
+        )
+        self.settings_button.pack(pady=20)
 
         # Кнопка "Выход"
         self.exit_button = Button(
@@ -107,21 +139,92 @@ class Menu:
             font=("Arial", 24),
             width=20,
             height=2,
-            command=exit_game_callback
+            command=self.exit_game_callback
         )
         self.exit_button.pack(pady=20)
 
-    def hide(self):
-        """Скрыть меню."""
-        self.frame.pack_forget()
+    def show_difficulty_menu(self):
+        """Показывает меню выбора сложности."""
+        # Очищаем текущее содержимое меню
+        for widget in self.frame.winfo_children():
+            widget.destroy()
 
-    def show(self):
-        """Показать меню."""
-        self.frame.pack(fill="both", expand=True)
+        # Заголовок меню выбора сложности
+        Label(
+            self.frame,
+            text="Выберите сложность",
+            font=("Arial", 36),
+            bg="lightblue"
+        ).pack(pady=50)
+
+        # Кнопка "Нормальный"
+        Button(
+            self.frame,
+            text="Нормальный",
+            font=("Arial", 24),
+            width=20,
+            height=2,
+            command=lambda: start_game("normal")
+        ).pack(pady=10)
+
+        # Кнопка "Сложный"
+        Button(
+            self.frame,
+            text="Сложный",
+            font=("Arial", 24),
+            width=20,
+            height=2,
+            command=lambda: start_game("hard")
+        ).pack(pady=10)
+
+        # Кнопка "Брутальный"
+        Button(
+            self.frame,
+            text="Брутальный",
+            font=("Arial", 24),
+            width=20,
+            height=2,
+            command=lambda: start_game("brutal")
+        ).pack(pady=10)
+
+        # Кнопка "Назад"
+        Button(
+            self.frame,
+            text="Назад",
+            font=("Arial", 24),
+            width=20,
+            height=2,
+            command=self.show_main_menu
+        ).pack(pady=20)
+
+    def show_soon_message(self):
+        """Показывает сообщение 'Скоро'."""
+        # Очищаем текущее содержимое меню
+        for widget in self.frame.winfo_children():
+            widget.destroy()
+
+        # Надпись "Скоро"
+        Label(
+            self.frame,
+            text="Скоро",
+            font=("Arial", 36),
+            bg="lightblue"
+        ).pack(pady=50)
+
+        # Кнопка "Назад"
+        Button(
+            self.frame,
+            text="Назад",
+            font=("Arial", 24),
+            width=20,
+            height=2,
+            command=self.show_main_menu
+        ).pack(pady=20)
 
 
-def start_game():
-    """Запуск игры."""
+def start_game(difficulty="normal"):
+    """Запуск игры с выбранной сложностью."""
+    print(f"Выбрана сложность: {difficulty}")  # Для отладки
     menu.hide()  # Скрываем меню
     canv.pack()  # Показываем холст с игрой
     world.initialize(canv)
@@ -148,7 +251,7 @@ load_textures()
 canv = Canvas(w, width=world.SCREEN_WIDTH, height=world.SCREEN_HEIGHT, bg='light green')
 
 # Создание меню
-menu = Menu(w, start_game, exit_game)
+menu = Menu(w, lambda: menu.show_difficulty_menu(), exit_game)
 
 # Показываем меню при запуске
 menu.show()
