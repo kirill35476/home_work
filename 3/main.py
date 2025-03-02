@@ -1,12 +1,11 @@
 import missile_collection
 from tkinter import *
-
 import world
 import tank_collection
 import textytre
 
-KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN = 37, 39, 38, 40
 
+KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN = 37, 39, 38, 40
 KEY_W = 87
 KEY_S = 83
 KEY_A = 65
@@ -46,7 +45,7 @@ def key_press(event):
         world.move_camera(-5, 0)
     elif event.keycode == KEY_RIGHT:
         world.move_camera(5, 0)
-    elif event.keycode == 32:
+    elif event.keycode == 32:  # Пробел
         player.fire()
 
 
