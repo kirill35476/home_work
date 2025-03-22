@@ -1,6 +1,17 @@
+import time
 import random
 
-class Character:
+
+# Функция для медленного вывода текста
+def print_slow(text):
+    for char in text:
+        print(char, end='', flush=True)
+        time.sleep(0.03)
+    print()
+
+
+# Класс для создания врагов
+class Enemy:
     def __init__(self, name, health, attack):
         self.name = name
         self.health = health
@@ -9,59 +20,84 @@ class Character:
     def is_alive(self):
         return self.health > 0
 
-class Player(Character):
-    def __init__(self, name):
-        super().__init__(name, health=20, attack=5)
 
-    def choose_action(self):
-        print("\nВыберите действие:")
-        print("1. Атаковать")
-        print("2. Использовать предмет")
-        print("3. Убежать")
-        choice = input("Ваш выбор: ")
-        return choice
+# Класс игрока
+class Player:
+    def __init__(self, name, health, attack):
+        self.name = name
+        self.health = health
+        self.attack = attack
 
-class Monster(Character):
-    def __init__(self, name):
-        super().__init__(name, health=10, attack=3)
+    def is_alive(self):
+        return self.health > 0
 
-def battle(player, monster):
-    while player.is_alive() and monster.is_alive():
-        action = player.choose_action()
 
-        if action == '1':  # Атаковать
-            print(f"\n{player.name} атакует {monster.name}!")
-            monster.health -= player.attack
-            print(f"{monster.name} осталось здоровья: {monster.health}")
-        elif action == '2':  # Использовать предмет
-            heal_amount = random.randint(5, 10)
-            player.health += heal_amount
-            print(f"{player.name} использует предмет и восстанавливает {heal_amount} здоровья!")
-            print(f"Текущее здоровье {player.name}: {player.health}")
-        elif action == '3':  # Убежать
-            print(f"{player.name} убегает от {monster.name}!")
+# Функция для боя
+def battle(player, enemy):
+    print_slow(f"Вы встретили {enemy.name}!")
+    while player.is_alive() and enemy.is_alive():
+        print_slow(f"Ваше здоровье: {player.health}")
+        print_slow(f"Здоровье {enemy.name}: {enemy.health}")
+        print_slow("1. Атаковать")
+        print_slow("2. Действовать")
+        print_slow("3. Пощадить")
+
+        choice = input("Что вы выберете? (1/2/3): ")
+
+        if choice == "1":
+            damage = random.randint(1, player.attack)
+            enemy.health -= damage
+            print_slow(f"Вы атаковали {enemy.name} и нанесли {damage} урона!")
+        elif choice == "2":
+            print_slow(f"Вы попытались поговорить с {enemy.name}...")
+            print_slow(f"{enemy.name} выглядит задумчивым.")
+        elif choice == "3":
+            print_slow(f"Вы решили пощадить {enemy.name}.")
+            print_slow(f"{enemy.name} уходит, улыбаясь.")
             break
         else:
-            print("Неверный выбор, попробуйте снова.")
+            print_slow("Неверный выбор. Попробуйте снова.")
+            continue
 
-        if monster.is_alive():
-            print(f"{monster.name} атакует {player.name}!")
-            player.health -= monster.attack
-            print(f"{player.name} осталось здоровья: {player.health}")
+        if enemy.is_alive():
+            enemy_damage = random.randint(1, enemy.attack)
+            player.health -= enemy_damage
+            print_slow(f"{enemy.name} атаковал вас и нанес {enemy_damage} урона!")
 
     if player.is_alive():
-        print(f"\n{player.name} победил {monster.name}!")
+        print_slow(f"Вы победили {enemy.name}!")
     else:
-        print(f"\n{player.name} был повержен {monster.name}... Игра окончена.")
+        print_slow("Вы проиграли...")
 
+
+# Основная функция игры
 def main():
-    print("Добро пожаловать в упрощенную версию Undertale!")
-    player_name = input("Введите имя вашего персонажа: ")
-    player = Player(player_name)
-    monster = Monster("Скелет")
+    print_slow("Добро пожаловать в мир Undertale!")
+    print_slow("Введите имя вашего персонажа:")
+    player_name = input("> ")
+    player = Player(player_name, health=20, attack=5)
 
-    print(f"\n{player.name} встретил {monster.name}!")
-    battle(player, monster)
+    print_slow(f"Привет, {player.name}! Вы просыпаетесь в темной пещере...")
+    print_slow("Перед вами два пути: налево и направо.")
+
+    choice = input("Куда вы пойдете? (налево/направо): ")
+
+    if choice == "налево":
+        print_slow("Вы нашли сундук с сокровищами!")
+        print_slow("Ваша атака увеличена на 2!")
+        player.attack += 2
+    elif choice == "направо":
+        print_slow("Вы встретили монстра!")
+        enemy = Enemy("Гостер", health=15, attack=3)
+        battle(player, enemy)
+    else:
+        print_slow("Вы заблудились...")
+
+    if player.is_alive():
+        print_slow("Вы продолжаете свое путешествие...")
+    else:
+        print_slow("Игра окончена.")
+
 
 if __name__ == "__main__":
     main()

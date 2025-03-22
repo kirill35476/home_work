@@ -1,9 +1,9 @@
-import missile_collection
 from tkinter import *
+from menu import Menu
+import missile_collection
 import world
 import tank_collection
 import textytre
-
 
 KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN = 37, 39, 38, 40
 KEY_W = 87
@@ -49,6 +49,7 @@ def key_press(event):
         player.fire()
 
 
+
 def load_textures():
     textytre.load('tank_up', '../img/tank_up.png')
     textytre.load('tank_down', '../img/tank_down.png')
@@ -74,161 +75,13 @@ def load_textures():
     textytre.load('tank_destroy', '../img/tank_destroy.png')
 
 
-class Menu:
-    def __init__(self, root, start_game_callback, exit_game_callback):
-        self.root = root
-        self.frame = Frame(root, bg="lightblue")
-        self.frame.pack(fill="both", expand=True)
-
-        # Сохраняем callback-функции
-        self.start_game_callback = start_game_callback
-        self.exit_game_callback = exit_game_callback
-
-        # Показываем главное меню
-        self.show_main_menu()
-
-    def hide(self):
-        """Скрыть меню."""
-        self.frame.pack_forget()
-
-    def show(self):
-        """Показать меню."""
-        self.frame.pack(fill="both", expand=True)
-
-    def show_main_menu(self):
-        """Показывает главное меню."""
-        # Очищаем текущее содержимое меню
-        for widget in self.frame.winfo_children():
-            widget.destroy()
-
-        # Заголовок меню
-        self.title_label = Label(
-            self.frame,
-            text="Танки на минималках 2.0",
-            font=("Arial", 36),
-            bg="lightblue"
-        )
-        self.title_label.pack(pady=50)
-
-        # Кнопка "Начать игру"
-        self.start_button = Button(
-            self.frame,
-            text="Начать игру",
-            font=("Arial", 24),
-            width=20,
-            height=2,
-            command=self.start_game_callback
-        )
-        self.start_button.pack(pady=20)
-
-        # Кнопка "Настройки"
-        self.settings_button = Button(
-            self.frame,
-            text="Настройки",
-            font=("Arial", 24),
-            width=20,
-            height=2,
-            command=self.show_soon_message
-        )
-        self.settings_button.pack(pady=20)
-
-        # Кнопка "Выход"
-        self.exit_button = Button(
-            self.frame,
-            text="Выход",
-            font=("Arial", 24),
-            width=20,
-            height=2,
-            command=self.exit_game_callback
-        )
-        self.exit_button.pack(pady=20)
-
-    def show_difficulty_menu(self):
-        """Показывает меню выбора сложности."""
-        # Очищаем текущее содержимое меню
-        for widget in self.frame.winfo_children():
-            widget.destroy()
-
-        # Заголовок меню выбора сложности
-        Label(
-            self.frame,
-            text="Выберите сложность",
-            font=("Arial", 36),
-            bg="lightblue"
-        ).pack(pady=50)
-
-        # Кнопка "Нормальный"
-        Button(
-            self.frame,
-            text="Нормальный",
-            font=("Arial", 24),
-            width=20,
-            height=2,
-            command=lambda: start_game("normal")
-        ).pack(pady=10)
-
-        # Кнопка "Сложный"
-        Button(
-            self.frame,
-            text="Сложный",
-            font=("Arial", 24),
-            width=20,
-            height=2,
-            command=lambda: start_game("hard")
-        ).pack(pady=10)
-
-        # Кнопка "Брутальный"
-        Button(
-            self.frame,
-            text="Брутальный",
-            font=("Arial", 24),
-            width=20,
-            height=2,
-            command=lambda: start_game("brutal")
-        ).pack(pady=10)
-
-        # Кнопка "Назад"
-        Button(
-            self.frame,
-            text="Назад",
-            font=("Arial", 24),
-            width=20,
-            height=2,
-            command=self.show_main_menu
-        ).pack(pady=20)
-
-    def show_soon_message(self):
-        """Показывает сообщение 'Скоро'."""
-        # Очищаем текущее содержимое меню
-        for widget in self.frame.winfo_children():
-            widget.destroy()
-
-        # Надпись "Скоро"
-        Label(
-            self.frame,
-            text="Скоро",
-            font=("Arial", 36),
-            bg="lightblue"
-        ).pack(pady=50)
-
-        # Кнопка "Назад"
-        Button(
-            self.frame,
-            text="Назад",
-            font=("Arial", 24),
-            width=20,
-            height=2,
-            command=self.show_main_menu
-        ).pack(pady=20)
-
-
 def start_game(difficulty="normal"):
     """Запуск игры с выбранной сложностью."""
     print(f"Выбрана сложность: {difficulty}")  # Для отладки
     menu.hide()  # Скрываем меню
     canv.pack()  # Показываем холст с игрой
     world.initialize(canv)
-    tank_collection.initialize(canv)
+    tank_collection.initialize(canv, difficulty)  # Передаем сложность
     missile_collection.initialize(canv)
     w.bind('<KeyPress>', key_press)
     update()
@@ -251,7 +104,7 @@ load_textures()
 canv = Canvas(w, width=world.SCREEN_WIDTH, height=world.SCREEN_HEIGHT, bg='light green')
 
 # Создание меню
-menu = Menu(w, lambda: menu.show_difficulty_menu(), exit_game)
+menu = Menu(w, start_game, exit_game)
 
 # Показываем меню при запуске
 menu.show()

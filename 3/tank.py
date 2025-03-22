@@ -41,6 +41,7 @@ class Tank:
 
         print(self)
 
+
     def __take_ammo(self):
         self.__ammo += 10
         if self.__ammo > 100:

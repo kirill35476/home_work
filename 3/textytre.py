@@ -1,4 +1,3 @@
-# 1 создадим модуль, который будет управлять всеми изображениями
 from tkinter import PhotoImage
 
 _frames = {}

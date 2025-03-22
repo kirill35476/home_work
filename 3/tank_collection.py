@@ -9,13 +9,28 @@ _canvas = None
 id_screen_text = 0
 
 
-def initialize(canv):
+def initialize(canv, difficulty="normal"):
     global _canvas, id_screen_text
     _canvas = canv
-    player = spawn(False)
-    enemy = spawn(True).set_target(player)
-    spawn(True).set_target(player)
 
+    # Спавн игрока
+    player = spawn(False)
+
+    # Спавн врагов в зависимости от уровня сложности
+    if difficulty == "easy":
+        num_enemies = 2  # Легкий уровень: 2 врага
+    elif difficulty == "normal":
+        num_enemies = 4  # Нормальный уровень: 4 врага
+    elif difficulty == "hard":
+        num_enemies = 6  # Сложный уровень: 6 врагов
+    else:
+        num_enemies = 4  # По умолчанию: 4 врага
+
+    for _ in range(num_enemies):
+        enemy = spawn(True)
+        enemy.set_target(player)  # Назначаем игрока целью для врагов
+
+    # Создание текста на экране
     id_screen_text = _canvas.create_text(10, 10,
                                          text=_get_screen_text(),
                                          font=('TkDefualFont', 20),
@@ -28,7 +43,7 @@ def _get_screen_text():
         return 'GAME OVER'
     if len(_tanks) == 1:
         return 'YOU WON'
-    return 'осталось {}'.format(len(_tanks) - 1)
+    return 'Осталось врагов: {}'.format(len(_tanks) - 1)
 
 
 def _update_screen():
